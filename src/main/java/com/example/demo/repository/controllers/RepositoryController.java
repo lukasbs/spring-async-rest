@@ -4,6 +4,7 @@ import com.example.demo.repository.dto.RepositoryDto;
 import com.example.demo.repository.services.RepositoryService;
 import com.example.demo.utils.Constraints;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,7 +20,7 @@ public class RepositoryController {
         this.repositoryService = repositoryService;
     }
 
-    @GetMapping(path = Constraints.GET_URL , produces = "application/json")
+    @GetMapping(path = Constraints.GET_URL , produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody CompletableFuture<RepositoryDto> findRepository
             (@PathVariable String owner, @PathVariable String repositoryName) {
         return repositoryService.findRepository(String.format(Constraints.URL_TEMPLATE, owner, repositoryName));
