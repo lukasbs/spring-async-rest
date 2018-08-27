@@ -13,16 +13,15 @@ import java.util.concurrent.Executor;
 public class DemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args).close();
+        SpringApplication.run(DemoApplication.class, args);
     }
 
     @Bean
-    public Executor asyncExecutor() {
+    public Executor getExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(2);
-        executor.setQueueCapacity(500);
-        executor.setThreadNamePrefix("GithubLookup-");
+        executor.setCorePoolSize(20);
+        executor.setMaxPoolSize(20);
+        executor.setQueueCapacity(100);
         executor.initialize();
         return executor;
     }
