@@ -14,15 +14,15 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class RepositoryService {
     private final RestTemplate restTemplate;
+    private final ModelMapper modelMapper;
 
-
-    public RepositoryService(RestTemplateBuilder restTemplateBuilder) {
+    public RepositoryService(RestTemplateBuilder restTemplateBuilder, ModelMapper modelMapper) {
         this.restTemplate = restTemplateBuilder.errorHandler(new DefaultResponseErrorHandler()).build();
+        this.modelMapper = modelMapper;
     }
 
     @Async
     public CompletableFuture<ResponseDto> findRepository(String url) {
-        ModelMapper modelMapper = new ModelMapper();
         return CompletableFuture.completedFuture(restTemplate.getForObject(url, RepositoryDto.class))
                 .thenApply(result -> modelMapper.map(result, ResponseDto.class));
     }
