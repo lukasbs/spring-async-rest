@@ -1,6 +1,8 @@
 package com.example.demo.repository.services;
 
 import com.example.demo.repository.dto.RepositoryDto;
+import com.example.demo.repository.dto.ResponseDto;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -21,9 +23,10 @@ public class RepositoryService {
     }
 
     @Async
-    public CompletableFuture<RepositoryDto> findRepository(String url) {
+    public CompletableFuture<ResponseDto> findRepository(String url) {
         logger.info("Looking up " + url);
+        ModelMapper modelMapper = new ModelMapper();
         RepositoryDto repositoryDto = restTemplate.getForObject(url, RepositoryDto.class);
-        return CompletableFuture.completedFuture(repositoryDto);
+        return CompletableFuture.completedFuture(repositoryDto).thenApply(result -> modelMapper.map(result, ResponseDto.class));
     }
 }
